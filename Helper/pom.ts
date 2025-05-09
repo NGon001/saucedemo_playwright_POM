@@ -74,12 +74,13 @@ export class InventoryPage {
         this.itemPrice = this.page.locator('.inventory_item_price');
     }
 
-    async goto() {
-        await this.page.goto(this.url);
-    }
-
     async isReady(){
         await expect(this.title).toBeVisible();
+    }
+
+    async goto() {
+        await this.page.goto(this.url);
+        await this.isReady();
     }
 
     async getProducts() {
@@ -118,6 +119,12 @@ export class InventoryPage {
 
     async goToCart() {
         await this.shopping_cart.click();
+    }
+
+    async expectCartCount(expectedCount: number) {       
+        const expectedCountString = expectedCount === 0 ? "" : expectedCount.toString();
+        const actualCartCountString = await this.getCartCount();
+        await expect(actualCartCountString).toBe(expectedCountString);
     }
 }
 
