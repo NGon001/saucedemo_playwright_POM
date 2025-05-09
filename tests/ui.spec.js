@@ -1,7 +1,12 @@
 import { test } from '../Helper/base';
 import { expect } from "@playwright/test";
 
-test('Add products to cart and remove from cart', async ({ inventoryPage }) => {
+test.beforeEach(async ({ context }) => {
+    await context.route('**/*.{png,jpg,jpeg,svg}', route => route.abort());
+    await context.route('**/*.{woff,woff2,ttf}', route => route.abort());
+});
+
+test('Add products to cart and remove from cart', async ({ inventoryPage,page }) => {
     // #ADD PRODUCTS TO CART
 
     await inventoryPage.goto();

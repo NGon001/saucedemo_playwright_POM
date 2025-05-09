@@ -5,6 +5,10 @@ export default async function globalSetup() {
     const browser = await chromium.launch();
     const context = await browser.newContext();
     const page = await context.newPage();
+
+    await page.route('**/*.{png,jpg,jpeg,svg}', route => route.abort());
+    await page.route('**/*.{woff,woff2,ttf}', route => route.abort());
+
     const account = new Account(page);
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
