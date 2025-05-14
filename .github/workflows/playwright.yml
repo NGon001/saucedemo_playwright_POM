@@ -39,11 +39,24 @@ jobs:
 
     - name: Run Playwright tests
       run: npx playwright test
-
-    - name: Upload Playwright report
-      if: ${{ !cancelled() }}
+    
+    - name: Upload Playwright Traces
+      if: failure()
       uses: actions/upload-artifact@v4
       with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+        name: playwright-traces
+        path: test-results/**/*.zip  # trace.zip files are usually stored in the output folder
+
+    - name: Upload Screenshots
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: playwright-screenshots
+        path: test-results/**/*.png
+
+    - name: Upload Videos
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: playwright-videos
+        path: test-results/**/*.webm
